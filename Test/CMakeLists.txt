@@ -1,1 +1,1 @@
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/PfAddBench.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/cmake/BenchTestAddTest.cmake)

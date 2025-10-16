@@ -1,8 +1,8 @@
 # Define a global property to hold all target paths
 include_guard(GLOBAL)
-define_property(GLOBAL PROPERTY PF_TEST_PATHS BRIEF_DOCS "Collected target output paths")
+define_property(GLOBAL PROPERTY BENCHTEST_TEST_PATHS BRIEF_DOCS "Collected target output paths")
 
-function(pf_add_test)
+function(benchtest_add_test)
     # First argument is the target name
     set(target_name ${ARGV0})
     # Call the real add_executable
@@ -24,14 +24,14 @@ function(pf_add_test)
 
     # Append the full path to the executable
     set(target_path "${output_location}/${target_name}${CMAKE_EXECUTABLE_SUFFIX}")
-    get_property(existing_paths GLOBAL PROPERTY PF_TEST_PATHS)
+    get_property(existing_paths GLOBAL PROPERTY BENCHTEST_TEST_PATHS)
     list(APPEND existing_paths "${target_path}")
-    set_property(GLOBAL PROPERTY PF_TEST_PATHS "${existing_paths}")
+    set_property(GLOBAL PROPERTY BENCHTEST_TEST_PATHS "${existing_paths}")
 endfunction()
 
 # Function to write target paths to file after config
-function(write_all_test_paths)
-  get_property(all_paths GLOBAL PROPERTY PF_TEST_PATHS)
+function(benchtest_write_all_test_paths)
+  get_property(all_paths GLOBAL PROPERTY BENCHTEST_TEST_PATHS)
   set(output_file "${CMAKE_SOURCE_DIR}/PfTestLists.txt")
 
     file(WRITE "${output_file}" "")
