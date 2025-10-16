@@ -12,18 +12,18 @@ namespace detail {
 /**@brief The Case encapsulates the core of the methadology
  *        This contains just some of the components of the thing that are present in all cases
  */
-class Case {
+class Case_impl {
 public:
 
 /**@brief Constructor for the guy 
  * @param func the actual function to run
  * @param name the name of this case
  */
-  Case(func_t func, std::string_view name);
+  Case_impl(func_t func, std::string_view name);
 
 /**@brief Don't need this, it should all be compile time anyways
  */
-  Case() = delete;
+  Case_impl() = delete;
 
 /**@note for some of the bench marking runs with a bit more stuff */
 protected:

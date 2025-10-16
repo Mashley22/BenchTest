@@ -1,6 +1,7 @@
-add_library(BenchTest_common
-  src/utils/timer.cpp)
+add_library(BenchTest_core
+  src/utils/timer.cpp
+  src/detail/case_impl.cpp)
 
-target_include_directories(BenchTest_common
+target_include_directories(BenchTest_core
   PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}/include)
