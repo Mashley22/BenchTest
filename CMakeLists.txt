@@ -5,6 +5,6 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_subdirectory(utils)
+add_subdirectory(common)
 add_subdirectory(Test)
 add_subdirectory(Bench)
