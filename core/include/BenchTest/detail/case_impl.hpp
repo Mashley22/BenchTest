@@ -29,6 +29,7 @@ public:
 protected:
   func_t m_func;
   std::string_view m_name;
+  std::size_t m_num;
 };
 
 }
