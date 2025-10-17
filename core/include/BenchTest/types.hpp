@@ -8,6 +8,11 @@ namespace benchtest {
  */
 using func_t = int(*)();
 
+/**@brief Empty @ref func_t that just returns successfully
+ * @retval 0 for success
+ */
+int emptyFunc_t(void) noexcept;
+
 }
 
 #endif /* BENCHTEST_TYPES_HPP */
