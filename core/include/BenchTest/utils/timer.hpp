@@ -15,11 +15,14 @@ namespace utils {
  */
 class Stopwatch {
 public:
-
-  /**@brief The timer keeps ticking, it carries on from the same time from when it was last stopped */
+  
+  /**@brief records the current time point */
   void start(void) noexcept;
+  
+  /**@brief Records the current time point */
+  void stop(void) noexcept;
 
-  /**@brief Returns the time delta from the current time to the internal clock */
+  /**@brief Returns the time delta from the stop time to the start time */
   mSeconds time(void) const noexcept;
   
   /**@brief Resets the internal timer to the default
@@ -30,7 +33,8 @@ public:
   mSeconds restart(void) noexcept;
 
 private:
-  std::chrono::time_point<std::chrono::steady_clock> m_timer = {};
+  std::chrono::time_point<std::chrono::steady_clock> m_start = {};
+  std::chrono::time_point<std::chrono::steady_clock> m_end = {};
 };
 
 }
