@@ -9,46 +9,6 @@ namespace test {
 
 namespace priv {
 
-enum class FailType {
-  ASSERT,
-  RETURN,
-};
-
-struct AssertFailInfo {
-  std::string_view cond;
-  std::size_t lineNum;
-};
-
-struct ReturnFailInfo {
-  std::string testName;
-  std::string_view suiteName;
-  std::size_t retVal;
-  std::size_t testNum;
-};
-
-struct FailInfo {
-  FailInfo(const AssertFailInfo&);
-  FailInfo(const ReturnFailInfo&);
-
-  FailType type;
-  union {
-    AssertFailInfo assertInfo;
-    ReturnFailInfo returnInfo;
-  };
-};
-
-struct FailErr {};
-
-class AssertFailErr : FailErr {
-public:
-  AssertFailErr(const AssertFailInfo& info);
-};
-
-class ReturnFailErr : FailErr {
-public:
-  ReturnFailErr(const ReturnFailInfo& info);
-};
-
 class CaseEnv : public Case {
 public:
   std::size_t caseNum;
@@ -57,6 +17,48 @@ public:
   CaseEnv() = delete;
   CaseEnv(const Case& caseInfo, std::size_t testNum) noexcept;
 };
+
+namespace fail {
+
+enum class Type {
+  ASSERT,
+  RETURN,
+};
+
+
+struct Info {
+  struct Return {
+    std::size_t retVal;
+    std::size_t testNum;
+  };
+
+  struct Assert {
+  std::string_view cond;
+  std::size_t lineNum;
+  };
+
+  Info() = delete;
+  
+  // Dont need the suite since these infos are store per suite
+  Info(const Assert&, const CaseEnv&);
+  Info(const Return&, const CaseEnv&);
+
+  Type type;
+  std::string_view testName;
+
+  union {
+    Assert assert;
+    Return ret;
+  } info;
+
+
+};
+
+struct Err {
+  Err() = delete;
+};
+
+}
 
 class Suite {
 public:
@@ -72,6 +74,8 @@ public:
   std::size_t numSkipped(void) const noexcept;
 
   void runCase(void);
+
+  const std::span<const fail::Info> failInfos(void) const noexcept;
 
 private:
   void printTestCaseInfos_(const CaseEnv& env) const;
@@ -114,6 +118,8 @@ private:
   func_t m_resetFunc;
   func_t m_recoverFunc;
 
+  std::vector<benchtest::test::priv::fail::Info> m_failInfos;
+
   struct {
     std::size_t success{0};
     std::size_t failed{0};
@@ -142,16 +148,11 @@ public:
 
   static void runCase(void) noexcept;
   
-  static void newFail(const ReturnFailInfo& info);
-  static void newFail(const AssertFailInfo& info);
-
 private:
 ///// PRIVATE VAR START /////
   static std::size_t m_currentSuiteNum;
 
   static std::vector<benchtest::test::priv::Suite> m_suites;
-
-  static std::vector<benchtest::test::priv::FailInfo> m_failInfos;
 
   static struct {
     std::size_t success{0};
