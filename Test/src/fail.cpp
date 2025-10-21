@@ -7,8 +7,8 @@ namespace benchtest {
 
 namespace test {
 
-void detail::assertFail(void) {
-  throw priv::fail::AssertErr();
+void detail::assertFail(std::string_view cond, std::size_t lineNum) {
+  throw priv::fail::AssertErr({cond, lineNum});
 }
 
 namespace priv {

@@ -54,8 +54,8 @@ struct Info {
 
 };
 
-struct Err {
-  Err() = delete;
+struct AssertErr {
+  Info::Assert info;
 };
 
 }
@@ -109,6 +109,9 @@ private:
   void reset_(const CaseEnv& env);
 
   void recover_(const CaseEnv& env);
+
+  void fail_(const fail::Info::Assert info, const CaseEnv& env);
+  void fail_(const fail::Info::Return info, const CaseEnv& env);
 
 ///// PRIV VAR START /////
   std::string_view m_name;

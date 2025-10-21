@@ -33,7 +33,7 @@ namespace detail {
 
 /**@brief thows an expcetion that is only internally available
  */
-void assertFail(void);
+void assertFail(std::string_view, std::size_t lineNum);
 
 }
 
