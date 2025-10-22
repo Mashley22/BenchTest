@@ -168,6 +168,10 @@ private:
 class Worker {
 public:
 
+  Worker() = default;
+
+  Worker(const Worker& other) noexcept;
+
   [[nodiscard]] bool active(void) const noexcept;
 
   void start(void);
