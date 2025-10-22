@@ -3,6 +3,10 @@
 
 #include <BenchTest/Test/Test.hpp>
 
+// tests whether the synclock was locked when expected
+#define ASSERT_SYNC { std::unique_lock<std::mutex> lock{Registry::syncLock(), std::try_to_lock}; \
+                  assert(!lock.owns_lock() && "BenchTest internal sync error"); } while(0)
+
 namespace benchtest {
 
 namespace test {
@@ -175,11 +179,9 @@ public:
 
 /**@brief everytime this is retrieved, it will also increment
   */
-  static std::size_t counter(void) noexcept;
+  [[nodiscard]] static std::size_t counter(void) noexcept;
 
-  static std::mutex& syncLock(void) noexcept;
-
-  static void runCase(void) noexcept;
+  [[nodiscard]] static std::mutex& syncLock(void) noexcept;
   
 private:
 ///// PRIVATE VAR START /////

@@ -4,6 +4,7 @@ add_library(BenchTest_Test
   src/Case_env.cpp
   src/fail.cpp
   src/Suite.cpp
+  src/Registry.cpp
 )
 
 target_include_directories(BenchTest_Test
