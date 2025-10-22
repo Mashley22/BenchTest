@@ -9,13 +9,28 @@ namespace test {
 
 namespace priv {
 
-class CaseEnv : public Case {
+class CaseEnv : private Case {
 public:
-  std::size_t caseNum;
-  utils::Stopwatch timer;
 
   CaseEnv() = delete;
-  CaseEnv(const Case& caseInfo, std::size_t testNum) noexcept;
+  CaseEnv(const Case& caseInfo, std::size_t suiteNum) noexcept;
+
+  [[nodiscard]]int run(void);
+  
+  [[nodiscard]] std::string_view name(void) const noexcept;
+
+  [[nodiscard]] std::size_t globalCaseNum(void) const noexcept;
+
+  [[nodiscard]] std::size_t suiteCaseNum(void) const noexcept;
+
+  [[nodiscard]] mSeconds time(void) const noexcept;  
+
+private:
+  using m_case = Case;
+  std::size_t m_globalCaseNum;
+  std::size_t m_suiteCaseNum;
+  utils::Stopwatch m_timer;
+
 };
 
 namespace fail {
