@@ -1,0 +1,24 @@
+CORE:
+fail systems working =====> Suite fail side, not too long
+run test case function
+run test suite function
+run registry function
+registry gets global session test counter from console
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FEATURES:
+Change internal classes so that theyre abstracted properly
+Add internal Suite test counters
