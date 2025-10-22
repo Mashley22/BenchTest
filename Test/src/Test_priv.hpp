@@ -41,7 +41,8 @@ enum class Type {
 };
 
 
-struct Info {
+class Info {
+public:
   struct Return {
     std::size_t retVal;
     std::size_t testNum;
@@ -58,13 +59,29 @@ struct Info {
   Info(const Assert&, const CaseEnv&);
   Info(const Return&, const CaseEnv&);
 
-  Type type;
-  std::string_view testName;
+  [[nodiscard]] Type type(void) const noexcept;
+
+  [[nodiscard]] std::string_view testName(void) const noexcept;
+
+  [[nodiscard]] std::size_t globalCaseNum(void) const noexcept;
+
+  [[nodiscard]] std::size_t suiteCaseNum(void) const noexcept;
+
+  [[nodiscard]] const Assert& assertInfo(void) const noexcept;
+
+  [[nodiscard]] const Return& returnInfo(void) const noexcept;
+
+private:
+  Type m_type;
+  std::string_view m_testName;
+
+  std::size_t m_globalTestNum;
+  std::size_t m_suiteTestNum;
 
   union {
     Assert assert;
     Return ret;
-  } info;
+  } m_info;
 
 
 };
