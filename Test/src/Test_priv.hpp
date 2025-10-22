@@ -112,10 +112,6 @@ public:
 private:
   void printTestCaseInfos_(const CaseEnv& env) const;
 
-  void printSetup_(const CaseEnv& env) const;
-
-  void printSetupFail_(const CaseEnv& env) const;
-
   void printReset_(const CaseEnv& env) const;
 
   void printResetFail_(const CaseEnv& env) const;
@@ -134,7 +130,7 @@ private:
 
   CaseEnv createEnv_(void);
 
-  Case nextCase_(void);
+  Case& nextCase_(void) noexcept;
 
   CaseEnv setup_(void);
 
@@ -145,11 +141,12 @@ private:
   void fail_(const fail::Info::Assert info, const CaseEnv& env);
   void fail_(const fail::Info::Return info, const CaseEnv& env);
 
+  std::size_t casesLeft_(void) const noexcept;
+
 ///// PRIV VAR START /////
   std::string_view m_name;
   std::vector<Case> m_cases;
 
-  func_t m_setupFunc;
   func_t m_resetFunc;
   func_t m_recoverFunc;
 
@@ -159,6 +156,7 @@ private:
     std::size_t success{0};
     std::size_t failed{0};
     std::size_t skipped{0};
+    std::size_t currentCaseNum{0};
   } m_stats;
 };
 
