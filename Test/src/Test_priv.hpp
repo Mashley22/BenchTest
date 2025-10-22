@@ -24,16 +24,16 @@ public:
   
   [[nodiscard]] std::string_view name(void) const noexcept;
 
-  [[nodiscard]] std::size_t globalCaseNum(void) const noexcept;
+  [[nodiscard]] std::size_t localCaseNum(void) const noexcept;
 
-  [[nodiscard]] std::size_t suiteCaseNum(void) const noexcept;
+  [[nodiscard]] std::size_t globalSuiteNum(void) const noexcept;
 
   [[nodiscard]] mSeconds time(void) const noexcept;  
 
 private:
   using m_case = Case;
-  std::size_t m_globalCaseNum;
-  std::size_t m_suiteCaseNum;
+  std::size_t m_globalSuiteNum;
+  std::size_t m_localCaseNum;
   utils::Stopwatch m_timer;
 
 };
@@ -80,7 +80,7 @@ private:
   Type m_type;
   std::string_view m_testName;
 
-  std::size_t m_globalTestNum;
+  std::size_t m_suiteNum;
   std::size_t m_suiteTestNum;
 
   union {
@@ -206,11 +206,11 @@ public:
 
 /**@brief everytime this is retrieved, it will also increment
   */
-  [[nodiscard]] static std::size_t counter(void) noexcept;
-
   [[nodiscard]] static std::mutex& syncLock(void) noexcept;
 
   [[nodiscard]] static Suite& currentSuite(void) noexcept;
+
+  [[nodiscard]] static std::size_t globalSuiteCounter(void) noexcept;
   
 private:
 ///// PRIVATE VAR START /////
@@ -223,11 +223,12 @@ private:
   static MainWorker m_mainWorker;
 
   static struct {
-    std::size_t success;
-    std::size_t failed;
-    std::size_t skipped;
-    std::size_t counter;
+    std::size_t success{0};
+    std::size_t failed{0};
+    std::size_t skipped{0};
   } m_stats;
+
+  static std::size_t m_globalSuiteCounter;
 
   static std::mutex m_syncLock;
 ///// PRIVATE VAR END /////

@@ -7,8 +7,8 @@ namespace test {
 
 namespace priv {
 
-CaseEnv::CaseEnv(const Case& caseInfo, std::size_t suiteNum) noexcept 
-  : m_case(caseInfo), m_globalCaseNum(Registry::counter()), m_suiteCaseNum(suiteNum) {}
+CaseEnv::CaseEnv(const Case& caseInfo, std::size_t localCaseNum) noexcept 
+  : m_case(caseInfo), m_globalSuiteNum(Registry::globalSuiteCounter()), m_localCaseNum(localCaseNum) {}
 
 int CaseEnv::run(void) {
   m_timer.start();
@@ -21,12 +21,12 @@ std::string_view CaseEnv::name(void) const noexcept {
   return m_case::name;
 }
 
-std::size_t CaseEnv::globalCaseNum(void) const noexcept {
-  return m_globalCaseNum;
+std::size_t CaseEnv::globalSuiteNum(void) const noexcept {
+  return m_globalSuiteNum;
 }
 
-std::size_t CaseEnv::suiteCaseNum(void) const noexcept {
-  return m_suiteCaseNum;
+std::size_t CaseEnv::localCaseNum(void) const noexcept {
+  return m_localCaseNum;
 }
 
 mSeconds CaseEnv::time(void) const noexcept {

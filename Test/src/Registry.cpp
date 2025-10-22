@@ -21,9 +21,8 @@ std::mutex Registry::m_syncLock;
 
 decltype(Registry::m_stats) Registry::m_stats = {0, 0, 0, 0};
 
-std::size_t Registry::counter(void) noexcept {
-  ASSERT_SYNC;
-  return m_stats.counter++;
+std::size_t Registry::globalSuiteCounter(void) noexcept {
+  return m_globalSuiteCounter;
 }
 
 std::mutex& Registry::syncLock(void) noexcept {

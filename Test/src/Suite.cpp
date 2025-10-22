@@ -29,7 +29,7 @@ Suite::Suite(const SuiteCreate_t& suiteInfo)
 
 void Suite::printTestCaseInfos_(const CaseEnv& env) const {
   ASSERT_SYNC;
-  std::cout << '#' << env.globalCaseNum() << ". " << env.suiteCaseNum() << "  " << m_name << " | " << env.name();
+  std::cout << '#' << env.globalSuiteNum() << ". " << env.localCaseNum() << "  " << m_name << " | " << env.name();
 }
 
 void Suite::printReset_(const CaseEnv& env) const {
