@@ -8,6 +8,9 @@ namespace test {
 
 namespace priv {
 
+Worker::Worker(const Worker& other) noexcept
+  : m_active{other.active()} {}
+
 bool Worker::active(void) const noexcept {
   return m_active.load(std::memory_order_seq_cst);
 }
