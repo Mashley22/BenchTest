@@ -9,9 +9,8 @@ namespace test {
 
 namespace priv {
 
-std::size_t Registry::counter(void) noexcept {
-  ASSERT_SYNC;
-  return m_stats.counter++;
+std::size_t Registry::globalSuiteCounter(void) noexcept {
+  return m_globalSuiteCounter;
 }
 
 std::mutex& Registry::syncLock(void) noexcept {
