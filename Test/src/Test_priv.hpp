@@ -214,17 +214,23 @@ private:
 
   static std::vector<benchtest::test::priv::Suite> m_suites;
 
+  static std::vector<Worker> m_workers;
+  
+  static MainWorker m_mainWorker;
+
   static struct {
-    std::size_t success{0};
-    std::size_t failed{0};
-    std::size_t skipped{0};
-    std::size_t counter{0};
+    std::size_t success;
+    std::size_t failed;
+    std::size_t skipped;
+    std::size_t counter;
   } m_stats;
 
   static std::mutex m_syncLock;
 ///// PRIVATE VAR END /////
 
   static void updStats_(void) noexcept;
+
+  static bool allWorkersDone_(void) noexcept;
 
 };
 
