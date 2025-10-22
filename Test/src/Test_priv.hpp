@@ -1,5 +1,6 @@
 #include <mutex>
 #include <string>
+#include <thread>
 
 #include <BenchTest/Test/Test.hpp>
 
@@ -164,6 +165,28 @@ private:
   } m_stats;
 };
 
+class Worker {
+public:
+
+  [[nodiscard]] bool active(void) const noexcept;
+
+  void start(void);
+
+protected:
+  void workLoop_(void);
+
+private:
+  std::jthread m_thread;
+  std::atomic_bool m_active{false};
+};
+
+class MainWorker : private Worker {
+public:
+  [[nodiscard]] bool active(void) const noexcept;
+    
+  void start(void);
+};
+
 class Registry {
 public:
   /**@brief static... */
@@ -182,6 +205,8 @@ public:
   [[nodiscard]] static std::size_t counter(void) noexcept;
 
   [[nodiscard]] static std::mutex& syncLock(void) noexcept;
+
+  [[nodiscard]] static Suite& currentSuite(void) noexcept;
   
 private:
 ///// PRIVATE VAR START /////
