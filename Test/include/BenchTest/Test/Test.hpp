@@ -2,9 +2,7 @@
 #define BENCHTEST_TEST_TEST_HPP
 
 #include <string_view>
-#include <atomic>
 
-#include <BenchTest/types.hpp>
 #include <BenchTest/utils/timer.hpp>
 
 /**@brief the assert to use when testing
