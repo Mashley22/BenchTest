@@ -184,6 +184,11 @@ void Suite::runCase(void) {
 
   reset_(curCase);
 }
+
+std::string_view Suite::name(void) const noexcept {
+  return m_name;
+}
+
 }
 
 }

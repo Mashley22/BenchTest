@@ -1,5 +1,4 @@
 #include <mutex>
-#include <string>
 #include <thread>
 
 #include <BenchTest/Test/Test.hpp>
@@ -110,6 +109,8 @@ public:
 
   std::size_t numSkipped(void) const noexcept;
 
+  std::string_view name(void) const noexcept;
+
   void runCase(void);
 
   const std::span<const fail::Info> failInfos(void) const noexcept;
@@ -204,16 +205,28 @@ public:
   /**@brief static... */
   Registry() = delete;
 
-/**@brief everytime this is retrieved, it will also increment
-  */
+  static void init(const std::size_t threadNum, const std::size_t globalSuiteCounter, std::string_view name);
+
   [[nodiscard]] static std::mutex& syncLock(void) noexcept;
 
   [[nodiscard]] static Suite& currentSuite(void) noexcept;
 
   [[nodiscard]] static std::size_t globalSuiteCounter(void) noexcept;
+
+  static void addSuite(const SuiteCreate_t& suiteInfo);
+
+  [[nodiscard]] static std::vector<std::string_view> suiteNames(void);
+
+  [[nodiscard]] static std::string_view name(void) noexcept;
+
+  [[nodiscard]] static std::size_t suiteNum(void) noexcept;
+
+  static void runAll(void);
   
 private:
 ///// PRIVATE VAR START /////
+  static std::string_view m_name;
+
   static std::size_t m_currentSuiteNum;
 
   static std::vector<benchtest::test::priv::Suite> m_suites;
@@ -227,6 +240,7 @@ private:
     std::size_t failed{0};
     std::size_t skipped{0};
   } m_stats;
+///// PRIVATE VAR END /////
 
   static std::size_t m_globalSuiteCounter;
 
@@ -236,6 +250,14 @@ private:
   static void updStats_(void) noexcept;
 
   static bool allWorkersDone_(void) noexcept;
+
+  static void nextSuite_(void) noexcept;
+
+  static void runSuite_(void);
+
+  static void printSuiteEnd_(void);
+
+  [[nodiscard]] static std::size_t numSuitesLeft_(void) noexcept;
 
 };
 
