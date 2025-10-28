@@ -79,9 +79,9 @@ public:
 
   [[nodiscard]] std::string_view testName(void) const noexcept;
 
-  [[nodiscard]] std::size_t globalCaseNum(void) const noexcept;
+  [[nodiscard]] std::size_t globalSuiteNum(void) const noexcept;
 
-  [[nodiscard]] std::size_t suiteCaseNum(void) const noexcept;
+  [[nodiscard]] std::size_t localCaseNum(void) const noexcept;
 
   [[nodiscard]] const Assert& assertInfo(void) const noexcept;
 
@@ -91,8 +91,8 @@ private:
   Type m_type;
   std::string_view m_testName;
 
-  std::size_t m_suiteNum;
-  std::size_t m_suiteTestNum;
+  std::size_t m_globalSuiteNum;
+  std::size_t m_localCaseNum;
 
   union {
     Assert assert;

@@ -17,15 +17,15 @@ Info::Info(const Assert& failInfo, const CaseEnv& env)
  :  m_type(Type::ASSERT), 
     m_info{ .assert = failInfo },
     m_testName(env.name()),
-    m_globalTestNum(env.globalCaseNum()),
-    m_suiteTestNum(env.suiteCaseNum()) {}
+    m_globalSuiteNum(env.globalSuiteNum()),
+    m_localCaseNum(env.localCaseNum()) {}
 
 Info::Info(const Return& failInfo, const CaseEnv& env) 
  :  m_type(Type::RETURN), 
     m_info{ .ret = failInfo },
     m_testName(env.name()),
-    m_globalTestNum(env.globalCaseNum()),
-    m_suiteTestNum(env.suiteCaseNum()) {}
+    m_globalSuiteNum(env.globalSuiteNum()),
+    m_localCaseNum(env.localCaseNum()) {}
 
 Type Info::type(void) const noexcept {
   return m_type;
@@ -35,12 +35,12 @@ std::string_view Info::testName(void) const noexcept {
   return m_testName;
 }
 
-std::size_t Info::suiteCaseNum(void) const noexcept {
-  return m_suiteTestNum;
+std::size_t Info::localCaseNum(void) const noexcept {
+  return m_localCaseNum;
 }
 
-std::size_t Info::globalCaseNum(void) const noexcept {
-  return m_globalTestNum;
+std::size_t Info::globalSuiteNum(void) const noexcept {
+  return m_globalSuiteNum;
 }
 
 const Info::Assert& Info::assertInfo(void) const noexcept {
