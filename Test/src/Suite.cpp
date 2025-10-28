@@ -82,14 +82,16 @@ void Suite::printFail_(const CaseEnv& env) const {
   std::cout << '\n';
 }
 
-Case& Suite::nextCase_(void) noexcept {
+Case& Suite::getNextCase_(void) noexcept {
   ASSERT_SYNC;
   return m_cases[m_stats.currentCaseNum];
 }
 
 CaseEnv Suite::createEnv_(void) {
   ASSERT_SYNC;
-  return CaseEnv(nextCase_(), m_stats.currentCaseNum++);
+  CaseEnv retEnv(getNextCase_(), m_stats.currentCaseNum); // looks funny, but to guarantee order of functions we have to do it this way
+  m_stats.currentCaseNum++;
+  return retEnv;
 }
 
 std::size_t Suite::casesLeft_(void) const noexcept {
@@ -158,7 +160,7 @@ std::size_t Suite::numSkipped(void) const noexcept {
 
 bool Suite::empty(void) const noexcept {
   std::lock_guard<std::mutex> lock(Registry::syncLock());
-  return casesLeft_();
+  return (casesLeft_() == 0);
 }
 
 const std::span<const fail::Info> Suite::failInfos(void) const noexcept {
@@ -166,12 +168,14 @@ const std::span<const fail::Info> Suite::failInfos(void) const noexcept {
 }
 
 void Suite::runCase(void) {
+
   CaseEnv curCase = setup_(); 
   try {
     int res = curCase.run();
   }
   catch (fail::AssertErr err) {
     m_stats.failed++;
+    fail_(err.info, curCase);
     recover_(curCase);
     return;
   }

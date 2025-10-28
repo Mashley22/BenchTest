@@ -9,10 +9,11 @@
 
 /**@brief the assert to use when testing
  */
-#define BENCHTEST_ASSERT(expr, msg)                                     \
+
+#define BENCHTEST_ASSERT(expr)                                         \
     do {                                                                \
         if (!(expr)) {                                                  \
-            std::cerr << "Assertion failed: " #expr << msg              \
+            std::cerr << "Assertion failed: " #expr              \
                       << " at " << __FILE__ << ":" << __LINE__ << "\n"; \
             benchtest::test::detail::assertFail(#expr, __LINE__);       \
         }                                                               \

@@ -150,7 +150,7 @@ private:
 
   CaseEnv createEnv_(void);
 
-  Case& nextCase_(void) noexcept;
+  Case& getNextCase_(void) noexcept;
 
   CaseEnv setup_(void);
 

@@ -3,7 +3,6 @@ include_guard(GLOBAL)
 set(THIS_DIR ${CMAKE_CURRENT_LIST_DIR} CACHE INTERNAL "")
 
 function(benchtest_add_test target_name sources)
-    list(REMOVE_AT sources 0)
 
     list(APPEND sources ${THIS_DIR}/../src/main.cpp)
 

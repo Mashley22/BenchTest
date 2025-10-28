@@ -16,7 +16,7 @@ std::size_t Registry::m_globalSuiteCounter = 0;
 
 std::vector<Suite> Registry::m_suites;
 
-std::vector<Worker> Registry::m_workers;
+std::vector<Worker> Registry::m_workers(0);
 
 MainWorker Registry::m_mainWorker;
 
@@ -42,6 +42,7 @@ Suite& Registry::addSuite(std::string_view name, const SuiteCreate_t &suiteInfo)
 
 void Registry::init(const std::size_t threadNum, const std::size_t globalSuiteCounter) {
   assert(m_workers.size() == 0);
+  assert(threadNum > 0);
   m_workers.resize(threadNum - 1);
   m_globalSuiteCounter = globalSuiteCounter;
 }
