@@ -15,8 +15,8 @@ void assertFail(std::string_view cond, std::size_t lineNum) {
 
 SuiteAutoRegister::SuiteAutoRegister(std::string_view name, const SuiteCreate_t& suiteInfo) : suite(priv::Registry::addSuite(name, suiteInfo)) {}
 
-CaseAutoRegister::CaseAutoRegister(benchtest::test::priv::Suite& suite, const func_t func, std::string_view name) {
-  suite.addCase({name, func});
+CaseAutoRegister::CaseAutoRegister(benchtest::test::detail::SuiteAutoRegister& suite, const func_t func, std::string_view name) {
+  suite.suite.addCase({name, func});
 }
 
 }

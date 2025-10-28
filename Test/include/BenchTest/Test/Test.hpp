@@ -2,6 +2,7 @@
 #define BENCHTEST_TEST_TEST_HPP
 
 #include <string_view>
+#include <iostream> //NOLINT
 
 #include <BenchTest/types.hpp>
 #include <BenchTest/utils/timer.hpp>
@@ -13,15 +14,15 @@
         if (!(expr)) {                                                  \
             std::cerr << "Assertion failed: " #expr << msg              \
                       << " at " << __FILE__ << ":" << __LINE__ << "\n"; \
-            assertFail(#expr, __LINE__);                                \
+            benchtest::test::detail::assertFail(#expr, __LINE__);       \
         }                                                               \
     } while (0)
 
 
-#define BENCHTEST_TESTCASE(suite, case) \
-  static func_t test_##suite##_##case(void); \
-  static benchtest::test::detail::CaseAutoRegister testCase_##suite##_##case##(suite, #case, case); \
-  static func_t test_##suite##_##case(void)
+#define BENCHTEST_TESTCASE(suiteName, testCase) \
+  static int test_##suiteName##_##testCase(); \
+  static benchtest::test::detail::CaseAutoRegister testCase_##suiteName##_##testCase(suite_##suiteName, test_##suiteName##_##testCase, #testCase); \
+  static int test_##suiteName##_##testCase()
 
 #define BENCHTEST_TESTSUITE(name, suiteInfo) \
   static benchtest::test::detail::SuiteAutoRegister suite_##name(#name, suiteInfo)
@@ -71,7 +72,7 @@ struct SuiteAutoRegister {
 
 struct CaseAutoRegister {
   CaseAutoRegister() = delete;
-  CaseAutoRegister(benchtest::test::priv::Suite& suite, const func_t func, std::string_view name);
+  CaseAutoRegister(benchtest::test::detail::SuiteAutoRegister& suite, const func_t func, std::string_view name);
 };
 
 }
