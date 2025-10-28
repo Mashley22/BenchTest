@@ -23,7 +23,7 @@
   static benchtest::test::detail::CaseAutoRegister testCase_##suite##_##case##(suite, #case, case); \
   static func_t test_##suite##_##case(void)
 
-#define BENCHTEST_SUITE(name, suiteInfo) \
+#define BENCHTEST_TESTSUITE(name, suiteInfo) \
   static benchtest::test::detail::SuiteAutoRegister suite_##name(#name, suiteInfo)
 
 namespace benchtest {
