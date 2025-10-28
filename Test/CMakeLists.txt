@@ -6,6 +6,7 @@ add_library(BenchTest_Test
   src/Suite.cpp
   src/Registry.cpp
   src/Worker.cpp
+  src/Test.cpp
 )
 
 target_include_directories(BenchTest_Test

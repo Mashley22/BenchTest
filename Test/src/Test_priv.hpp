@@ -13,6 +13,18 @@ namespace test {
 
 namespace priv {
 
+/**@brief struct for creation of testcases
+ */
+struct Case {
+/**@brief the name of the test::Case
+ */
+  std::string_view name;
+
+/**@brief the actual function to run see @ref func_t
+ */
+  func_t func;
+};
+
 class CaseEnv : private Case {
 public:
 
@@ -99,7 +111,7 @@ struct AssertErr {
 class Suite {
 public:
   Suite() = delete;
-  Suite(const SuiteCreate_t& suiteInfo);
+  Suite(std::string_view name, const SuiteCreate_t& suiteInfo);
 
   bool empty(void) const noexcept;
 
@@ -114,6 +126,8 @@ public:
   void runCase(void);
 
   const std::span<const fail::Info> failInfos(void) const noexcept;
+
+  void addCase(const Case& caseInfo);
 
 private:
   void printTestCaseInfos_(const CaseEnv& env) const;
@@ -213,11 +227,9 @@ public:
 
   [[nodiscard]] static std::size_t globalSuiteCounter(void) noexcept;
 
-  static void addSuite(const SuiteCreate_t& suiteInfo);
+  [[nodiscard]] static Suite& addSuite(std::string_view name, const SuiteCreate_t& suiteInfo);
 
   [[nodiscard]] static std::vector<std::string_view> suiteNames(void);
-
-  [[nodiscard]] static std::string_view name(void) noexcept;
 
   [[nodiscard]] static std::size_t suiteNum(void) noexcept;
 
@@ -225,8 +237,6 @@ public:
   
 private:
 ///// PRIVATE VAR START /////
-  static std::string_view m_name;
-
   static std::size_t m_currentSuiteNum;
 
   static std::vector<benchtest::test::priv::Suite> m_suites;

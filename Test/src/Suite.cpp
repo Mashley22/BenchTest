@@ -21,9 +21,8 @@ static void m_printTime(mSeconds time) {
 
 }
 
-Suite::Suite(const SuiteCreate_t& suiteInfo)
-  : m_name(suiteInfo.name), 
-    m_cases(suiteInfo.cases),
+Suite::Suite(std::string_view name, const SuiteCreate_t& suiteInfo)
+  : m_name(name), 
     m_resetFunc(suiteInfo.resetFunc),
     m_recoverFunc(suiteInfo.recoverFunc) {}
 
@@ -172,6 +171,7 @@ void Suite::runCase(void) {
     int res = curCase.run();
   }
   catch (fail::AssertErr err) {
+    m_stats.failed++;
     recover_(curCase);
     return;
   }
@@ -187,6 +187,10 @@ void Suite::runCase(void) {
 
 std::string_view Suite::name(void) const noexcept {
   return m_name;
+}
+
+void Suite::addCase(const Case& caseInfo) {
+  m_cases.push_back(caseInfo);
 }
 
 }
