@@ -7,3 +7,5 @@
 bin/
 **/.cache/
 *.a
+**/CTestTestfile.cmake
+/Testing/
