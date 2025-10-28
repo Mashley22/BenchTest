@@ -6,7 +6,12 @@ function(benchtest_add_test)
     # First argument is the target name
     set(target_name ${ARGV0})
     # Call the real add_executable
-    add_executable(${ARGV})
+    set(sources ${ARGV})
+    list(REMOVE_AT sources 0)
+
+    list(APPEND ${CMAKE_CURRENT_LIST_DIR}/src/main.cpp)
+
+    add_executable(${target_name} ${sources})
 
     set_target_properties(${target_name} PROPERTIES
       RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/tests/)

@@ -219,7 +219,7 @@ public:
   /**@brief static... */
   Registry() = delete;
 
-  static void init(const std::size_t threadNum, const std::size_t globalSuiteCounter, std::string_view name);
+  static void init(const std::size_t threadNum, const std::size_t globalSuiteCounter);
 
   [[nodiscard]] static std::mutex& syncLock(void) noexcept;
 

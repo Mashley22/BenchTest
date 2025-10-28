@@ -36,11 +36,11 @@ Suite& Registry::currentSuite(void) noexcept {
   return m_suites[m_currentSuiteNum];
 }
 
-Suite& Registry::addSuite(std::sttring_view name, const SuiteCreate_t &suiteInfo) {
+Suite& Registry::addSuite(std::string_view name, const SuiteCreate_t &suiteInfo) {
   return m_suites.emplace_back(name, suiteInfo);
 }
 
-void Registry::init(const std::size_t threadNum, const std::size_t globalSuiteCounter, std::string_view name) {
+void Registry::init(const std::size_t threadNum, const std::size_t globalSuiteCounter) {
   assert(m_workers.size() == 0);
   m_workers.resize(threadNum - 1);
   m_globalSuiteCounter = globalSuiteCounter;
