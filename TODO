@@ -1,2 +1,5 @@
+End of suite report failures if neccessary
+End of testing report failures if neccessary
+
 internal CLI lib stuff, i.e threadnum picking suites/cases by name etc.
 tracker tool lib, tracks which tests failed when etc.

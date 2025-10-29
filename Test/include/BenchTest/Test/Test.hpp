@@ -13,8 +13,6 @@
 #define BENCHTEST_ASSERT(expr)                                         \
     do {                                                                \
         if (!(expr)) {                                                  \
-            std::cerr << "Assertion failed: " #expr              \
-                      << " at " << __FILE__ << ":" << __LINE__ << "\n"; \
             benchtest::test::detail::assertFail(#expr, __LINE__);       \
         }                                                               \
     } while (0)

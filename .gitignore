@@ -1,7 +1,6 @@
 **/CMakeCache.txt
 **/cmake_install.cmake
 **/compile_commands.json
-**/PfTestLists.txt
 **/Makefile
 **/CMakeFiles/
 bin/
@@ -9,3 +8,6 @@ bin/
 *.a
 **/CTestTestfile.cmake
 /Testing/
+**.ninja_deps
+**.ninja_log
+**/build.ninja

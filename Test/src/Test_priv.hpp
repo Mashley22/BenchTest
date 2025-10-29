@@ -8,7 +8,7 @@
 #define ASSERT_SYNC { std::unique_lock<std::mutex> lock{Registry::syncLock(), std::try_to_lock}; \
                   assert(!lock.owns_lock() && "BenchTest internal sync error"); } while(0)
 
-#define TEST_TAG_WIDTH 20
+#define TEST_TAG_WIDTH 18
 
 namespace benchtest {
 
@@ -151,8 +151,10 @@ private:
   void printStart_(const CaseEnv& env) const;
 
   void printSuccess_(const CaseEnv& env) const;
+  
+  void printFail_(const CaseEnv& env, const fail::Info::Assert& info) const;
 
-  void printFail_(const CaseEnv& env) const;
+  void printFail_(const CaseEnv& env, const fail::Info::Return& info) const;
 
   void failedSuite_(void);
 

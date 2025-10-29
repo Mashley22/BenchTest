@@ -82,11 +82,19 @@ void Suite::printSuccess_(const CaseEnv& env) const {
   std::cout << '\n';
 }
 
-void Suite::printFail_(const CaseEnv& env) const {
+void Suite::printFail_(const CaseEnv& env, const fail::Info::Return& info) const {
   ASSERT_SYNC;
   printTag<4>("FAIL");
   printTestCaseInfos_(env);
-  m_printTime(env.time());
+  std::cout << std::right << std::setw(15) << "Returned: " << info.retVal;
+  std::cout << '\n';
+}
+
+void Suite::printFail_(const CaseEnv& env, const fail::Info::Assert& info) const {
+  ASSERT_SYNC;
+  printTag<4>("FAIL");
+  printTestCaseInfos_(env);
+  std::cout << std::right << std::setw(26) << "Assert failed, line: " << std::setw(5) << info.lineNum << "  " << info.cond;
   std::cout << '\n';
 }
 
@@ -139,8 +147,8 @@ void Suite::reset_(const CaseEnv& env) {
 }
 
 void Suite::recover_(const CaseEnv& env) {
+  ASSERT_SYNC;
   // The lock guard here prevents any other test threads from doing too much
-  std::lock_guard<std::mutex> lock(Registry::syncLock());
   printRecover_(env);
   try {
     int res = m_recoverFunc();
@@ -180,10 +188,20 @@ void Suite::runCase(void) {
   CaseEnv curCase = setup_(); 
   try {
     int res = curCase.run();
+    if (res != 0) {
+      std::lock_guard<std::mutex> lg(Registry::syncLock());
+      m_stats.failed++;
+      fail::Info::Return retInfo;
+      retInfo.retVal = res;
+      printFail_(curCase, retInfo);
+      recover_(curCase);
+      return;
+    }
   }
   catch (fail::AssertErr err) {
+    std::lock_guard<std::mutex> lg(Registry::syncLock());
     m_stats.failed++;
-    //fail_(err.info, curCase);
+    printFail_(curCase, err.info);
     recover_(curCase);
     return;
   }
