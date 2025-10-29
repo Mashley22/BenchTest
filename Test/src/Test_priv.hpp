@@ -1,11 +1,14 @@
 #include <mutex>
 #include <thread>
 
+#include <BenchTest/utils/stdout.hpp>
 #include <BenchTest/Test/Test.hpp>
 
 // tests whether the synclock was locked when expected
 #define ASSERT_SYNC { std::unique_lock<std::mutex> lock{Registry::syncLock(), std::try_to_lock}; \
                   assert(!lock.owns_lock() && "BenchTest internal sync error"); } while(0)
+
+#define TEST_TAG_WIDTH 20
 
 namespace benchtest {
 
@@ -13,6 +16,11 @@ namespace test {
 
 namespace priv {
 
+template<int contentsSize>
+void printTag(std::string_view contents) {
+  utils::printTag<TEST_TAG_WIDTH, contentsSize>(contents);
+}
+  
 /**@brief struct for creation of testcases
  */
 struct Case {

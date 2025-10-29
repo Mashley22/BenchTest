@@ -64,6 +64,9 @@ std::size_t Registry::suiteNum(void) noexcept {
 void Registry::runAll(void) {
   while(numSuitesLeft_() != 0) {
     runSuite_();
+    updStats_();
+    printSuiteEnd_();
+    nextSuite_();
   }
 }
 
@@ -101,9 +104,6 @@ void Registry::runSuite_(void) {
   while (!allWorkersDone_()) {
 
   }
-
-  updStats_();
-  nextSuite_();
 }
 
 std::size_t Registry::numSuitesLeft_(void) noexcept {
@@ -112,8 +112,9 @@ std::size_t Registry::numSuitesLeft_(void) noexcept {
 
 void Registry::printSuiteEnd_(void) {
   std::lock_guard<std::mutex> lock(m_syncLock);
-
-  std::cout << "[ SUITE END ] " << currentSuite().name() << '\n';
+  
+  printTag<9>("SUITE END");
+  std::cout << currentSuite().name() << '\n';
 
 }
 

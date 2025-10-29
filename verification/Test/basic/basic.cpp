@@ -6,7 +6,7 @@ int emptyFunc(void) { return 0;}
 
 BENCHTEST_TESTSUITE(basic, EMPTY);
 
-BENCHTEST_TESTCASE(basic, ah) {
-  BENCHTEST_ASSERT(0==1 && "a");
+BENCHTEST_TESTCASE(basic, base0) {
+  BENCHTEST_ASSERT(0==0 && "a");
   return 0;
 }

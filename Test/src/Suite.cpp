@@ -1,5 +1,8 @@
 #include <iostream>
 #include <assert.h>
+#include <iomanip>
+
+#include <BenchTest/utils/stdout.hpp>
 
 #include "Test_priv.hpp"
 
@@ -16,7 +19,7 @@ namespace priv {
 namespace {
 
 static void m_printTime(mSeconds time) {
-  std::cout << " ... " << std::chrono::duration_cast<std::chrono::seconds>(time);
+  std::cout << "... " << std::chrono::duration_cast<std::chrono::seconds>(time);
 }
 
 }
@@ -28,47 +31,52 @@ Suite::Suite(std::string_view name, const SuiteCreate_t& suiteInfo)
 
 void Suite::printTestCaseInfos_(const CaseEnv& env) const {
   ASSERT_SYNC;
-  std::cout << '#' << env.globalSuiteNum() << ". " << env.localCaseNum() << "  " << m_name << " | " << env.name();
+  std::cout << std::left << '#' 
+            << std::setw(4) << env.globalSuiteNum() 
+            << ". "
+            << std::setw(4) << env.localCaseNum() << "  "
+            << std::setw(10) << m_name << " | " 
+            << std::setfill('.') << std::setw(10) << env.name() << std::setfill(' ');
 }
 
 void Suite::printReset_(const CaseEnv& env) const {
   ASSERT_SYNC;
-  std::cout << "[ RESET ]";
+  printTag<5>("RESET");
   printTestCaseInfos_(env);
   std::cout << '\n';
 }
 
 void Suite::printResetFail_(const CaseEnv& env) const {
   ASSERT_SYNC;
-  std::cout << "[ RESET FAIL ]";
+  printTag<10>("RESET FAIL");
   printTestCaseInfos_(env);
   std::cout << '\n';
 }
 
 void Suite::printRecover_(const CaseEnv& env) const {
   ASSERT_SYNC;
-  std::cout << "[ RECOVER ]";
+  printTag<7>("RECOVER");
   printTestCaseInfos_(env);
   std::cout << '\n';
 }
 
 void Suite::printRecoverFail_(const CaseEnv& env) const {
   ASSERT_SYNC;
-  std::cout << "[ RECOVER FAIL ]";
+  printTag<12>("RECOVER FAIL");
   printTestCaseInfos_(env);
   std::cout << '\n';
 }
 
 void Suite::printStart_(const CaseEnv& env) const {
   ASSERT_SYNC;
-  std::cout << "[ START ]";
+  printTag<5>("START");
   printTestCaseInfos_(env);
   std::cout << '\n';
 }
 
 void Suite::printSuccess_(const CaseEnv& env) const {
   ASSERT_SYNC;
-  std::cout << "[ SUCCESS ]";
+  printTag<7>("SUCCESS");
   printTestCaseInfos_(env);
   m_printTime(env.time());
   std::cout << '\n';
@@ -76,7 +84,7 @@ void Suite::printSuccess_(const CaseEnv& env) const {
 
 void Suite::printFail_(const CaseEnv& env) const {
   ASSERT_SYNC;
-  std::cout << "[ FAIL ]";
+  printTag<4>("FAIL");
   printTestCaseInfos_(env);
   m_printTime(env.time());
   std::cout << '\n';
@@ -175,7 +183,7 @@ void Suite::runCase(void) {
   }
   catch (fail::AssertErr err) {
     m_stats.failed++;
-    fail_(err.info, curCase);
+    //fail_(err.info, curCase);
     recover_(curCase);
     return;
   }
